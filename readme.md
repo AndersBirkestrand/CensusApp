@@ -17,3 +17,7 @@ DIALECT= mysql
 DIALECTMODEL= mysql2
 DB_PORT = 14676
 HOST = mysql-census-anders-firstattempt.f.aivencloud.com
+
+
+Dummy user can be found via postman on a GET @ https://censusapp-2n0w.onrender.com/participants/
+Admin user has been implemented in the database.
