@@ -32,7 +32,7 @@ function validateParticipant(req, res, next) {
     if(!companyname) {
         return res.status(400).json({ error: "Companyname is required" });
     }
-    if(salary = null) {
+    if(salary == null) {
         return res.status(400).json({ error: "Salary is required" });
     }
     if(typeof salary !== "number") {
