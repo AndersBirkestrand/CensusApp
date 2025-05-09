@@ -6,7 +6,7 @@ https://censusapp-2n0w.onrender.com
 
 ## Environment Variables
 
-Create a file named `.env` in the project root with the following info.
+Configuration info for the `.env` 
 
 ```dotenv
 # Database (Aiven Cloud)
