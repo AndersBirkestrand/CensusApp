@@ -8,7 +8,7 @@ var logger = require('morgan');
 var indexRouter = require('./routes/index');
 const participantsRouter = require("./routes/participants");
 
-db.sequelize.sync({ alter: true });
+db.sequelize.sync();
 var app = express();
 
 // view engine setup
