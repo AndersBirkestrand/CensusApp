@@ -1,3 +1,4 @@
+require("dotenv").config();
 var createError = require('http-errors');
 var db = require('./models');
 var express = require('express');
@@ -5,10 +6,11 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
+
 var indexRouter = require('./routes/index');
 const participantsRouter = require("./routes/participants");
 
-db.sequelize.sync();
+db.sequelize.sync({ alter: true});
 var app = express();
 
 // view engine setup

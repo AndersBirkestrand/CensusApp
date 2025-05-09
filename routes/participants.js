@@ -35,7 +35,7 @@ router.delete("/:email", isAdmin, async(req,res, next) => {
 router.put("/:email", isAdmin, validateParticipant, async(req, res, next) => {
     try {
         const { email } = req.params;
-        const updated = await participantService.updateParticipant(email, req.body);
+        const updated = await participantService.updateParticipant({email, ...req.body});
         if(!updated) {
             return res.status(404).json({ message: `No user found with email: ${email}`});
         }
@@ -56,7 +56,7 @@ router.get("/", isAdmin, async(req, res, next) => {
 
 router.get("/details", isAdmin, async(req, res, next) => {
     try {
-        const allDetails = await participantService.allDetails();
+        const allDetails = await participantService.listDetails();
         return res.status(200).json({ participants: allDetails });
     } catch (err) {
         return next(err);

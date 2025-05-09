@@ -36,41 +36,47 @@ class Participant {
     }
     // Update participant based on the email
     async updateParticipant({ email, firstname, lastname, dob, work, home }) {
-        return this.client.transaction(async (t) => {
-          // Update Participant row
-          const [count] = await this.Participant.update(
-            { firstname, lastname, dob },
-            { where: { email }, transaction: t }
-          );
-          if (count === 0) {
-            throw new Error(`Participant with email ${email} not found`);
-          }
-      
-          // Update Work row
-          await this.Work.update(
-            {
-              companyname: work.companyname,
-              salary:      work.salary,
-              currency:    work.currency
-            },
-            { where: { participantEmail: email }, transaction: t }
-          );
-      
-          // Update Home row
-          await this.Home.update(
-            {
-              country: home.country,
-              city:    home.city
-            },
-            { where: { participantEmail: email }, transaction: t }
-          );
-          // Return updated information
-          return this.Participant.findOne({
-            where:       { email },
-            include:     [ this.Work, this.Home ],
+      return this.client.transaction(async (t) => {
+        // Check if user exists
+        const participant = await this.Participant.findByPk(email, { transaction: t });
+        if (!participant) {
+          return null;
+        }
+    
+        await participant.update(
+          { firstname, lastname, dob },
+          { transaction: t }
+        );
+    
+        await this.Work.update(
+          {
+            companyname: work.companyname,
+            salary:      work.salary,
+            currency:    work.currency
+          },
+          {
+            where:       { participantEmail: email },
             transaction: t
-          });
+          }
+        );
+    
+        await this.Home.update(
+          {
+            country: home.country,
+            city:    home.city
+          },
+          {
+            where:       { participantEmail: email },
+            transaction: t
+          }
+        );
+
+        return this.Participant.findOne({
+          where:       { email },
+          include:     [ this.Work, this.Home ],
+          transaction: t
         });
+      });
     }
     // Delete participant and cascade to also delete work and home
     async deleteParticipant(email) {
